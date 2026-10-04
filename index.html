@@ -31,7 +31,7 @@
       /* Neutrals & Surfaces */
       --bg-base: #f8fafc;
       --bg-surface: #ffffff;
-      --bg-surface-translucent: rgba(255, 255, 255, 0.82);
+      --bg-surface-translucent: rgba(255, 255, 255, 0.85);
       --border-color: #e2e8f0;
       --border-focus: #c7d2fe;
 
@@ -41,17 +41,16 @@
       --text-subtle: #94a3b8;
 
       /* Gradients */
-      --grad-mesh: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
-                    radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.1) 0px, transparent 50%),
-                    radial-gradient(at 50% 100%, rgba(6, 182, 212, 0.12) 0px, transparent 50%);
+      --grad-mesh: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.10) 0px, transparent 50%),
+                    radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.08) 0px, transparent 50%),
+                    radial-gradient(at 50% 100%, rgba(6, 182, 212, 0.10) 0px, transparent 50%);
       --grad-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
       --grad-accent: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-      --grad-badge: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
 
       /* Shadows */
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-      --shadow-hover: 0 20px 35px -8px rgba(79, 70, 229, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+      --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      --shadow-hover: 0 20px 35px -8px rgba(79, 70, 229, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.04);
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
@@ -82,6 +81,7 @@
       line-height: 1.6;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      position: relative;
     }
 
     a {
@@ -100,33 +100,70 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ==========================================================================
+       DYNAMIC CANVAS BACKGROUND & SCROLL PROGRESS TRACER
+       ========================================================================== */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.85;
+    }
+
+    .scroll-tracer-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3.5px;
+      width: 0%;
+      background: var(--grad-primary);
+      z-index: 10000;
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+      transition: width 0.08s ease-out;
     }
 
     /* Ambient Decorative Gradient Blobs */
     .ambient-glow {
       position: fixed;
-      width: 480px;
-      height: 480px;
+      width: 520px;
+      height: 520px;
       border-radius: 50%;
-      filter: blur(100px);
+      filter: blur(120px);
       pointer-events: none;
-      z-index: -1;
-      opacity: 0.5;
+      z-index: 0;
+      opacity: 0.45;
+      animation: floatAmbient 18s ease-in-out infinite alternate;
     }
     .ambient-glow--1 {
-      top: -100px;
-      left: 10%;
-      background: rgba(99, 102, 241, 0.2);
+      top: -120px;
+      left: 5%;
+      background: rgba(99, 102, 241, 0.22);
     }
     .ambient-glow--2 {
       top: 40%;
       right: -100px;
-      background: rgba(236, 72, 153, 0.15);
+      background: rgba(236, 72, 153, 0.18);
+      animation-delay: -6s;
     }
     .ambient-glow--3 {
       bottom: 5%;
-      left: 20%;
-      background: rgba(6, 182, 212, 0.15);
+      left: 15%;
+      background: rgba(6, 182, 212, 0.18);
+      animation-delay: -12s;
+    }
+
+    @keyframes floatAmbient {
+      0% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(35px) scale(1.08); }
+      100% { transform: translateY(-25px) scale(0.95); }
     }
 
     /* ==========================================================================
@@ -145,10 +182,10 @@
       max-width: 1100px;
       margin: 0 auto;
       background: var(--bg-surface-translucent);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
       border-radius: var(--radius-full);
       display: flex;
       align-items: center;
@@ -185,12 +222,12 @@
       display: flex;
       align-items: center;
       list-style: none;
-      gap: 0.4rem;
+      gap: 0.35rem;
     }
 
     .nav-link {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
+      padding: 0.5rem 0.95rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--text-muted);
       border-radius: var(--radius-full);
@@ -225,7 +262,6 @@
       cursor: pointer;
     }
 
-    /* Mobile Drawer */
     @media (max-width: 860px) {
       .nav-links {
         position: fixed;
@@ -320,7 +356,7 @@
     }
 
     .hero-subtitle {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       color: var(--text-muted);
       margin-bottom: 2rem;
       max-width: 580px;
@@ -414,7 +450,7 @@
       background: var(--bg-surface);
       border-radius: var(--radius-xl);
       padding: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.95);
       box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.18), 0 0 0 1px rgba(226, 232, 240, 0.8);
       transition: var(--transition-base);
     }
@@ -444,48 +480,21 @@
       transform: scale(1.03);
     }
 
-    .hero-badge-float {
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--bg-surface);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-full);
-      padding: 0.6rem 1.4rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      white-space: nowrap;
-    }
-
-    .badge-icon-robot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--grad-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 0.85rem;
-    }
-
     /* ==========================================================================
-       METRICS / STATS BAR
+       METRICS / STATS BAR WITH ANIMATED COUNTERS
        ========================================================================== */
     .metrics-bar {
-      padding: 2rem 0;
-      margin-bottom: 3.5rem;
+      padding: 1.5rem 0 3.5rem;
+      position: relative;
+      z-index: 2;
     }
 
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
-      background: var(--bg-surface);
+      background: var(--bg-surface-translucent);
+      backdrop-filter: blur(14px);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
       padding: 1.75rem 2rem;
@@ -502,10 +511,11 @@
 
     .metric-number {
       font-family: var(--font-display);
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       font-weight: 800;
       color: var(--primary);
       line-height: 1.1;
+      display: inline-block;
     }
 
     .metric-label {
@@ -545,6 +555,7 @@
     .section {
       padding: 5rem 0;
       position: relative;
+      z-index: 2;
     }
 
     .section-header {
@@ -581,7 +592,7 @@
     }
 
     /* ==========================================================================
-       PROJECTS SECTION (FIGMA MK1 CARDS & FILTER TABS)
+       PROJECTS SECTION WITH 3D TILT CARDS
        ========================================================================== */
     .filter-tabs {
       display: flex;
@@ -619,26 +630,29 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
       gap: 2rem;
+      perspective: 1200px;
     }
 
     .project-card {
-      background: var(--bg-surface);
+      background: var(--bg-surface-translucent);
+      backdrop-filter: blur(16px);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
       overflow: hidden;
       box-shadow: var(--shadow-card);
-      transition: var(--transition-base);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
       display: flex;
       flex-direction: column;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
     .project-card:hover {
-      transform: translateY(-6px);
       box-shadow: var(--shadow-hover);
       border-color: var(--border-focus);
     }
 
-    /* Project Visual Banner with Fail-Safe Fallback */
+    /* Project Visual Banner */
     .project-media {
       position: relative;
       height: 210px;
@@ -650,7 +664,6 @@
       justify-content: center;
     }
 
-    /* The actual image if supplied */
     .project-img {
       width: 100%;
       height: 100%;
@@ -665,7 +678,6 @@
       transform: scale(1.05);
     }
 
-    /* Gradient Placeholder Art when image is loading / absent */
     .project-fallback-art {
       display: flex;
       flex-direction: column;
@@ -676,8 +688,6 @@
       height: 100%;
       padding: 1.5rem;
       text-align: center;
-      background-size: cover;
-      background-position: center;
       position: relative;
       z-index: 1;
     }
@@ -686,7 +696,7 @@
       width: 54px;
       height: 54px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
@@ -700,13 +710,12 @@
       font-weight: 700;
       font-size: 0.95rem;
       color: #1e1b4b;
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.8);
       padding: 0.25rem 0.75rem;
       border-radius: var(--radius-full);
       backdrop-filter: blur(4px);
     }
 
-    /* Individual Card Gradient Variations */
     .grad-card-1 { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 50%, #fae8ff 100%); }
     .grad-card-2 { background: linear-gradient(135deg, #cffafe 0%, #bae6fd 50%, #e0e7ff 100%); }
     .grad-card-3 { background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fee2e2 100%); }
@@ -786,7 +795,91 @@
     }
 
     /* ==========================================================================
-       SKILLS MATRIX (DESIGNER CHIP ACCENTS)
+       EDUCATION SECTION
+       ========================================================================== */
+    .timeline-wrap {
+      background: var(--bg-surface-translucent);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .timeline-title-head {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1.75rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .timeline-items {
+      position: relative;
+      padding-left: 1.5rem;
+      border-left: 2px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .timeline-item {
+      position: relative;
+    }
+
+    .timeline-marker {
+      position: absolute;
+      left: -1.95rem;
+      top: 0.25rem;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 3px solid var(--primary);
+      transition: transform 0.2s ease;
+    }
+
+    .timeline-item:hover .timeline-marker {
+      transform: scale(1.3);
+    }
+
+    .timeline-year {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-heading {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.2rem;
+    }
+
+    .timeline-place {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-score {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #334155;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+    }
+
+    /* ==========================================================================
+       SKILLS MATRIX
        ========================================================================== */
     .skills-grid {
       display: grid;
@@ -795,7 +888,8 @@
     }
 
     .skill-card {
-      background: var(--bg-surface);
+      background: var(--bg-surface-translucent);
+      backdrop-filter: blur(16px);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
       padding: 1.75rem;
@@ -806,6 +900,7 @@
     .skill-card:hover {
       border-color: var(--primary-light);
       transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
     }
 
     .skill-card-head {
@@ -855,6 +950,7 @@
       background: var(--primary-glow);
       color: var(--primary);
       border-color: var(--border-focus);
+      transform: translateY(-2px);
     }
 
     /* ==========================================================================
@@ -867,7 +963,8 @@
     }
 
     .achieve-card {
-      background: var(--bg-surface);
+      background: var(--bg-surface-translucent);
+      backdrop-filter: blur(16px);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
       padding: 1.5rem;
@@ -878,6 +975,7 @@
       transition: var(--transition-base);
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .achieve-card:hover {
@@ -931,148 +1029,27 @@
     }
 
     /* ==========================================================================
-       EDUCATION & CERTIFICATIONS
+       CERTIFICATIONS SECTION
        ========================================================================== */
-    .two-col-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2.5rem;
-    }
-
-    @media (max-width: 860px) {
-      .two-col-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .timeline-wrap {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      box-shadow: var(--shadow-card);
-    }
-
-    .timeline-title-head {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 1.75rem;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .timeline-items {
-      position: relative;
-      padding-left: 1.5rem;
-      border-left: 2px solid #e2e8f0;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .timeline-item {
-      position: relative;
-    }
-
-    .timeline-marker {
-      position: absolute;
-      left: -1.95rem;
-      top: 0.25rem;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--bg-surface);
-      border: 3px solid var(--primary);
-    }
-
-    .timeline-year {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.25rem;
-    }
-
-    .timeline-heading {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 0.2rem;
-    }
-
-    .timeline-place {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 0.4rem;
-    }
-
-    .timeline-score {
-      display: inline-block;
-      font-size: 0.8rem;
-      font-weight: 700;
-      background: #f1f5f9;
-      color: #334155;
-      padding: 0.2rem 0.6rem;
-      border-radius: var(--radius-full);
-    }
-
-    .cert-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .cert-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.25rem;
-      background: #f8fafc;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      transition: var(--transition-base);
-    }
-
-    .cert-item:hover {
-      border-color: var(--primary-light);
-      background: #ffffff;
-      transform: translateX(4px);
-      box-shadow: var(--shadow-sm);
-    }
-
     .cert-icon-check {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       background: var(--grad-primary);
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 0.9rem;
-    }
-
-    .cert-name {
-      font-weight: 600;
-      font-size: 0.92rem;
-      color: var(--text-main);
-    }
-
-    .cert-issuer {
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      font-size: 1.1rem;
     }
 
     /* ==========================================================================
        CONTACT SECTION
        ========================================================================== */
     .contact-card-main {
-      background: var(--bg-surface);
+      background: var(--bg-surface-translucent);
+      backdrop-filter: blur(20px);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-xl);
       padding: 3.5rem 2.5rem;
@@ -1089,7 +1066,7 @@
       left: -20%;
       width: 140%;
       height: 200%;
-      background: radial-gradient(circle at center, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+      background: radial-gradient(circle at center, rgba(99, 102, 241, 0.09) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -1113,7 +1090,7 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      background: #f8fafc;
+      background: #ffffff;
       border: 1px solid var(--border-color);
       padding: 0.75rem 1.4rem;
       border-radius: var(--radius-full);
@@ -1122,13 +1099,13 @@
       color: var(--text-main);
       cursor: pointer;
       transition: var(--transition-base);
+      box-shadow: var(--shadow-sm);
     }
 
     .contact-pill-item:hover {
-      background: #ffffff;
       border-color: var(--primary);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.12);
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.15);
     }
 
     /* ==========================================================================
@@ -1137,7 +1114,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
@@ -1239,6 +1216,8 @@
       text-align: center;
       color: var(--text-muted);
       font-size: 0.9rem;
+      position: relative;
+      z-index: 2;
     }
 
     .footer-brand {
@@ -1250,6 +1229,12 @@
   </style>
 </head>
 <body>
+
+  <!-- Dynamic Scroll Reading Progress Beam -->
+  <div class="scroll-tracer-bar" id="scrollTracer"></div>
+
+  <!-- Interactive Dynamic Robotics Grid Canvas (Reacts to Scroll & Mouse) -->
+  <canvas id="bg-canvas"></canvas>
 
   <!-- Ambient Light Gradients Background -->
   <div class="ambient-glow ambient-glow--1"></div>
@@ -1325,7 +1310,7 @@
 
         <!-- Hero Card Showcase -->
         <div class="hero-card-wrap">
-          <div class="hero-card">
+          <div class="hero-card data-tilt">
             <div class="profile-img-container">
               <img 
                 src="profile.JPG" 
@@ -1340,24 +1325,24 @@
     </div>
   </section>
 
-  <!-- Metrics / Stats Overview -->
+  <!-- Metrics / Stats Overview (Animated Numbers on Scroll) -->
   <div class="metrics-bar">
     <div class="container">
       <div class="metrics-grid">
         <div class="metric-item">
-          <div class="metric-number">8.16</div>
+          <div class="metric-number" data-target="8.16" data-decimals="2">8.16</div>
           <div class="metric-label">B.Tech CGPA</div>
         </div>
         <div class="metric-item">
-          <div class="metric-number">8+</div>
+          <div class="metric-number" data-target="8" data-suffix="+">8+</div>
           <div class="metric-label">Robotics Projects</div>
         </div>
         <div class="metric-item">
-          <div class="metric-number">8+</div>
+          <div class="metric-number" data-target="8" data-suffix="+">8+</div>
           <div class="metric-label">National Awards</div>
         </div>
         <div class="metric-item">
-          <div class="metric-number">10+</div>
+          <div class="metric-number" data-target="10" data-suffix="+">10+</div>
           <div class="metric-label">Certifications</div>
         </div>
       </div>
@@ -1365,7 +1350,7 @@
   </div>
 
   <!-- Dedicated Education Section -->
-  <section class="section" id="education" style="background: rgba(255,255,255,0.45); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+  <section class="section" id="education">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Academic Milestones</span>
@@ -1374,7 +1359,7 @@
       </div>
 
       <div style="max-width: 860px; margin: 0 auto;">
-        <div class="timeline-wrap" style="padding: 2.5rem 2rem;">
+        <div class="timeline-wrap">
           <div class="timeline-title-head">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
             <span>Academic Qualifications</span>
@@ -1423,7 +1408,7 @@
     </div>
   </section>
 
-  <!-- Projects Section (Figma Mk1 Inspired) -->
+  <!-- Projects Section (Figma Mk1 Inspired with 3D Tilt) -->
   <section class="section" id="projects">
     <div class="container">
       <div class="section-header">
@@ -1443,9 +1428,8 @@
       <div class="projects-grid" id="projectsGrid">
         
         <!-- Project 1 -->
-        <article class="project-card" data-category="ai">
+        <article class="project-card data-tilt" data-category="ai">
           <div class="project-media grad-card-1">
-            <!-- Fail-safe Image Loading -->
             <img src="assets/projects/tool-wear.jpg" alt="Automated Cutting Tool Wear Inspection" class="project-img" onerror="this.style.display='none'" />
             <div class="project-fallback-art">
               <div class="art-badge-icon">
@@ -1475,7 +1459,7 @@
         </article>
 
         <!-- Project 2 -->
-        <article class="project-card" data-category="industrial">
+        <article class="project-card data-tilt" data-category="industrial">
           <div class="project-media grad-card-2">
             <img src="assets/projects/fanuc-simulation.jpg" alt="Industrial Robotics Simulation" class="project-img" onerror="this.style.display='none'" />
             <div class="project-fallback-art">
@@ -1505,7 +1489,7 @@
         </article>
 
         <!-- Project 3 -->
-        <article class="project-card" data-category="embedded">
+        <article class="project-card data-tilt" data-category="embedded">
           <div class="project-media grad-card-3">
             <img src="assets/projects/articulated-arm.jpg" alt="4-DOF Articulated Robot" class="project-img" onerror="this.style.display='none'" />
             <div class="project-fallback-art">
@@ -1536,7 +1520,7 @@
         </article>
 
         <!-- Project 4 -->
-        <article class="project-card" data-category="embedded">
+        <article class="project-card data-tilt" data-category="embedded">
           <div class="project-media grad-card-4">
             <img src="assets/projects/octopod.jpg" alt="Jansen Octopod Robot" class="project-img" onerror="this.style.display='none'" />
             <div class="project-fallback-art">
@@ -1566,7 +1550,7 @@
         </article>
 
         <!-- Project 5 -->
-        <article class="project-card" data-category="ai">
+        <article class="project-card data-tilt" data-category="ai">
           <div class="project-media grad-card-5">
             <img src="assets/projects/bionic-hand.jpg" alt="Bionic Hand" class="project-img" onerror="this.style.display='none'" />
             <div class="project-fallback-art">
@@ -1596,7 +1580,7 @@
         </article>
 
         <!-- Project 6 -->
-        <article class="project-card" data-category="industrial">
+        <article class="project-card data-tilt" data-category="industrial">
           <div class="project-media grad-card-6">
             <img src="assets/projects/delta-robot.jpg" alt="Delta Robot" class="project-img" onerror="this.style.display='none'" />
             <div class="project-fallback-art">
@@ -1626,7 +1610,7 @@
         </article>
 
         <!-- Project 7 -->
-        <article class="project-card" data-category="industrial">
+        <article class="project-card data-tilt" data-category="industrial">
           <div class="project-media grad-card-7">
             <img src="assets/projects/ros2-turtlesim.jpg" alt="ROS 2 TurtleSim" class="project-img" onerror="this.style.display='none'" />
             <div class="project-fallback-art">
@@ -1656,7 +1640,7 @@
         </article>
 
         <!-- Project 8 -->
-        <article class="project-card" data-category="embedded">
+        <article class="project-card data-tilt" data-category="embedded">
           <div class="project-media grad-card-8">
             <img src="assets/projects/gps-tracker.jpg" alt="Real-Time GPS Tracker" class="project-img" onerror="this.style.display='none'" />
             <div class="project-fallback-art">
@@ -1690,7 +1674,7 @@
   </section>
 
   <!-- Technical Skills Matrix -->
-  <section class="section" id="skills" style="background: rgba(255, 255, 255, 0.5);">
+  <section class="section" id="skills">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Core Competencies</span>
@@ -1725,7 +1709,7 @@
             <span class="skill-chip">SolidWorks</span>
             <span class="skill-chip">PTC Creo</span>
             <span class="skill-chip">E-PLAN Pro V8</span>
-            <span class="skill-chip">3D Printing</span>
+            <span class="skill-chip">3D Rapid Prototyping</span>
           </div>
         </div>
 
@@ -1861,8 +1845,8 @@
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem;">
         
         <!-- Cert 1 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-industry4.jpg', 'NPTEL: Industry 4.0 & IIoT')" style="cursor: pointer;">
-          <div class="cert-icon-check" style="width: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px;">📜</div>
+        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-industry4.jpg', 'NPTEL: Industry 4.0 & IIoT')">
+          <div class="cert-icon-check">📜</div>
           <div class="achieve-content" style="flex-grow: 1;">
             <h4>Industry 4.0 &amp; Industrial IoT (IIoT)</h4>
             <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">National Programme on Technology Enhanced Learning</p>
@@ -1874,8 +1858,8 @@
         </div>
 
         <!-- Cert 2 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-autodesk.jpg', 'Autodesk Certified Associate')" style="cursor: pointer;">
-          <div class="cert-icon-check" style="width: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; background: linear-gradient(135deg, #0ea5e9, #2563eb);">📐</div>
+        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-autodesk.jpg', 'Autodesk Certified Associate')">
+          <div class="cert-icon-check" style="background: linear-gradient(135deg, #0ea5e9, #2563eb);">📐</div>
           <div class="achieve-content" style="flex-grow: 1;">
             <h4>CAD for Mechanical Design Associate Prep</h4>
             <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">Autodesk Certified Curriculum</p>
@@ -1887,8 +1871,8 @@
         </div>
 
         <!-- Cert 3 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-sourcecad.jpg', 'Fusion 360 & SolidWorks Certification')" style="cursor: pointer;">
-          <div class="cert-icon-check" style="width: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #ea580c);">🛠️</div>
+        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-sourcecad.jpg', 'Fusion 360 & SolidWorks Certification')">
+          <div class="cert-icon-check" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">🛠️</div>
           <div class="achieve-content" style="flex-grow: 1;">
             <h4>Fusion 360 &amp; SolidWorks Design</h4>
             <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">SourceCAD Professional Certification</p>
@@ -1900,8 +1884,8 @@
         </div>
 
         <!-- Cert 4 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-siemens.jpg', 'Siemens TecnoMatix Plant Simulation')" style="cursor: pointer;">
-          <div class="cert-icon-check" style="width: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; background: linear-gradient(135deg, #10b981, #059669);">🏭</div>
+        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-siemens.jpg', 'Siemens TecnoMatix Plant Simulation')">
+          <div class="cert-icon-check" style="background: linear-gradient(135deg, #10b981, #059669);">🏭</div>
           <div class="achieve-content" style="flex-grow: 1;">
             <h4>Siemens TecnoMatix Plant Simulation</h4>
             <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">Digital Factory &amp; Throughput Optimization</p>
@@ -1913,8 +1897,8 @@
         </div>
 
         <!-- Cert 5 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-eplan.jpg', 'E-PLAN Professional V8')" style="cursor: pointer;">
-          <div class="cert-icon-check" style="width: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6, #ec4899);">⚡</div>
+        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-eplan.jpg', 'E-PLAN Professional V8')">
+          <div class="cert-icon-check" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">⚡</div>
           <div class="achieve-content" style="flex-grow: 1;">
             <h4>E-PLAN Professional V8 &amp; PLC SCADA</h4>
             <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">Electrical Schematics &amp; Control Engineering</p>
@@ -1926,8 +1910,8 @@
         </div>
 
         <!-- Cert 6 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-softskills.jpg', 'NPTEL Soft Skills Development')" style="cursor: pointer;">
-          <div class="cert-icon-check" style="width: 44px; height: 44px; font-size: 1.1rem; border-radius: 12px; background: linear-gradient(135deg, #06b6d4, #3b82f6);">💡</div>
+        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-softskills.jpg', 'NPTEL Soft Skills Development')">
+          <div class="cert-icon-check" style="background: linear-gradient(135deg, #06b6d4, #3b82f6);">💡</div>
           <div class="achieve-content" style="flex-grow: 1;">
             <h4>Soft Skills &amp; Professional Development</h4>
             <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">Leadership, Collaboration &amp; Problem Solving</p>
@@ -1985,7 +1969,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-brand">Shreyas Shrimandhar Patil</div>
-      <p>© 2026 Shreyas Patil. All rights reserved</p>
+      <p>© 2026 Shreyas Patil. All rights reserved.</p>
     </div>
   </footer>
 
@@ -2013,16 +1997,245 @@
     <span id="toastMsg">Email copied to clipboard!</span>
   </div>
 
-  <!-- Interactive Scripts -->
+  <!-- ==========================================================================
+       DYNAMIC ENGINE: CANVAS GRID, SCROLL PARALLAX, 3D TILT & COUNTERS
+       ========================================================================== -->
   <script>
-    // Mobile navigation toggle
+    // --- 1. DYNAMIC ROBOTICS / CAD GRID & SENSOR NODE CANVAS ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let scrollY = window.scrollY;
+    let targetScrollY = scrollY;
+    let mouse = { x: -1000, y: -1000, active: false };
+
+    // Responsive setup with device pixel ratio scaling
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Floating Sensor Network Nodes
+    const NODE_COUNT = Math.min(42, Math.floor(window.innerWidth / 30));
+    const nodes = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+      nodes.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        radius: Math.random() * 2 + 1.5,
+        depth: Math.random() * 0.6 + 0.4 // Parallax depth factor
+      });
+    }
+
+    // Mouse Tracking
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      mouse.active = false;
+    });
+
+    // Scroll-Linked Parallax tracking
+    window.addEventListener('scroll', () => {
+      targetScrollY = window.scrollY;
+      
+      // Update top scroll tracer beam
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+      const tracer = document.getElementById('scrollTracer');
+      if (tracer) tracer.style.width = progress + '%';
+    }, { passive: true });
+
+    // Main Canvas Render Loop (60 FPS)
+    function renderCanvas() {
+      // Smooth interpolation for scroll inertia
+      scrollY += (targetScrollY - scrollY) * 0.08;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // --- Draw Dynamic Coordinate Grid (CAD / Robotics Simulation Plane) ---
+      const gridSize = 64;
+      const offsetX = 0;
+      // Lines shift upward smoothly with parallax scroll
+      const offsetY = -(scrollY * 0.35) % gridSize;
+
+      ctx.beginPath();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(99, 102, 241, 0.055)'; // Soft subtle indigo
+
+      // Vertical lines
+      for (let x = offsetX; x <= width; x += gridSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+      }
+      // Horizontal lines
+      for (let y = offsetY; y <= height; y += gridSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+
+      // Crosshairs / Grid Intersection Marks (Robotics Origin Points)
+      ctx.fillStyle = 'rgba(79, 70, 229, 0.12)';
+      for (let x = offsetX; x <= width; x += gridSize * 2) {
+        for (let y = offsetY; y <= height; y += gridSize * 2) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1.8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // --- Update and Draw Floating Sensor Nodes & Data Connections ---
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+
+        // Move nodes naturally
+        node.x += node.vx;
+        node.y += node.vy;
+
+        // Wrap around edges
+        if (node.x < 0) node.x = width;
+        if (node.x > width) node.x = 0;
+        if (node.y < 0) node.y = height;
+        if (node.y > height) node.y = 0;
+
+        // Dynamic parallax shift calculated from scroll
+        const drawY = (node.y - (scrollY * node.depth * 0.15)) % height;
+        const finalY = drawY < 0 ? drawY + height : drawY;
+
+        // Node Glow Dot
+        ctx.beginPath();
+        ctx.arc(node.x, finalY, node.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(79, 70, 229, 0.38)';
+        ctx.fill();
+
+        // Connect nearby nodes with subtle data telemetry lines
+        for (let j = i + 1; j < nodes.length; j++) {
+          const other = nodes[j];
+          const otherY = (other.y - (scrollY * other.depth * 0.15)) % height;
+          const finalOtherY = otherY < 0 ? otherY + height : otherY;
+
+          const dx = node.x - other.x;
+          const dy = finalY - finalOtherY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 130) {
+            ctx.beginPath();
+            ctx.moveTo(node.x, finalY);
+            ctx.lineTo(other.x, finalOtherY);
+            const alpha = (1 - dist / 130) * 0.14;
+            ctx.strokeStyle = `rgba(6, 182, 212, ${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+
+        // Interactive mouse connection line
+        if (mouse.active) {
+          const mdx = node.x - mouse.x;
+          const mdy = finalY - mouse.y;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+
+          if (mDist < 160) {
+            ctx.beginPath();
+            ctx.moveTo(node.x, finalY);
+            ctx.lineTo(mouse.x, mouse.y);
+            const mAlpha = (1 - mDist / 160) * 0.28;
+            ctx.strokeStyle = `rgba(236, 72, 153, ${mAlpha})`;
+            ctx.lineWidth = 1.1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(renderCanvas);
+    }
+    requestAnimationFrame(renderCanvas);
+
+    // --- 2. INTERACTIVE 3D PERSPECTIVE TILT ON PROJECT CARDS ---
+    const tiltElements = document.querySelectorAll('.data-tilt');
+
+    tiltElements.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -6.5;
+        const rotateY = ((x - centerX) / centerX) * 6.5;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      });
+    });
+
+    // --- 3. ANIMATED KINETIC STAT COUNTER ---
+    const counterElements = document.querySelectorAll('.metric-number[data-target]');
+    let countersStarted = false;
+
+    function animateCounters() {
+      counterElements.forEach(el => {
+        const target = parseFloat(el.getAttribute('data-target'));
+        const decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+        const suffix = el.getAttribute('data-suffix') || '';
+        const duration = 1600; // ms
+        const startTime = performance.now();
+
+        function updateCounter(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease-out cubic
+          const easeProgress = 1 - Math.pow(1 - progress, 3);
+          const currentVal = (easeProgress * target).toFixed(decimals);
+
+          el.textContent = currentVal + suffix;
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          } else {
+            el.textContent = (target % 1 === 0 && decimals === 0 ? target : target.toFixed(decimals)) + suffix;
+          }
+        }
+
+        requestAnimationFrame(updateCounter);
+      });
+    }
+
+    // Trigger counter when scrolled into view
+    const metricsBar = document.querySelector('.metrics-bar');
+    if (metricsBar) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !countersStarted) {
+          countersStarted = true;
+          animateCounters();
+        }
+      }, { threshold: 0.3 });
+      observer.observe(metricsBar);
+    }
+
+    // --- 4. NAVIGATION, TABS & MODALS ---
     const mobileToggle = document.getElementById('mobileToggle');
     const navLinks = document.getElementById('navLinks');
     mobileToggle.addEventListener('click', () => {
       navLinks.classList.toggle('show');
     });
 
-    // Close mobile nav on link click
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('show');
@@ -2074,7 +2287,6 @@
     const modalTitle = document.getElementById('modalTitle');
     const modalFallback = document.getElementById('modalFallbackNotice');
 
-    // Attach safe error fallback handler directly to image element
     if (modalImg) {
       modalImg.onerror = function() {
         this.style.display = 'none';
