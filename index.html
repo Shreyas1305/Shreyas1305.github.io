@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,7 +13,7 @@
 
   <style>
     /* ==========================================================================
-       DESIGN SYSTEM - MK1 INSPIRED LIGHT VIBRANT THEME
+       DESIGN SYSTEM - DUAL THEME TOKENS (LIGHT & DARK)
        ========================================================================== */
     :root {
       --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -28,12 +28,16 @@
       --accent-amber: #f59e0b;
       --accent-emerald: #10b981;
 
-      /* Neutrals & Surfaces */
+      /* Light Theme Defaults */
       --bg-base: #f8fafc;
       --bg-surface: #ffffff;
       --bg-surface-translucent: rgba(255, 255, 255, 0.85);
+      --bg-chip: #f8fafc;
+      --bg-tag: #f1f5f9;
+      --text-tag: #475569;
       --border-color: #e2e8f0;
       --border-focus: #c7d2fe;
+      --border-subtle: rgba(255, 255, 255, 0.85);
 
       /* Text Colors */
       --text-main: #0f172a;
@@ -60,6 +64,30 @@
       --transition-base: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    /* Dark Mode Variable Overrides */
+    [data-theme="dark"] {
+      --bg-base: #0b0f19;
+      --bg-surface: #131c2e;
+      --bg-surface-translucent: rgba(19, 28, 46, 0.85);
+      --bg-chip: #1a253a;
+      --bg-tag: #1e293b;
+      --text-tag: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.09);
+      --border-focus: #6366f1;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+
+      --grad-mesh: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.16) 0px, transparent 50%),
+                    radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
+                    radial-gradient(at 50% 100%, rgba(6, 182, 212, 0.14) 0px, transparent 50%);
+
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 20px 35px -8px rgba(79, 70, 229, 0.3), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    }
+
     /* Base Reset */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -82,6 +110,7 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     a {
@@ -167,7 +196,7 @@
     }
 
     /* ==========================================================================
-       NAVIGATION
+       NAVIGATION & THEME TOGGLE
        ========================================================================== */
     .navbar {
       position: fixed;
@@ -184,7 +213,7 @@
       background: var(--bg-surface-translucent);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--border-subtle);
       box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
       border-radius: var(--radius-full);
       display: flex;
@@ -253,6 +282,45 @@
       box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
     }
 
+    /* Dedicated Theme Switcher Button */
+    .theme-toggle-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-base);
+      box-shadow: var(--shadow-sm);
+      margin-left: 0.35rem;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+      transform: rotate(15deg) scale(1.05);
+    }
+
+    .theme-toggle-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .icon-sun { display: none; }
+    .icon-moon { display: block; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     .mobile-toggle {
       display: none;
       background: none;
@@ -314,6 +382,12 @@
       font-weight: 600;
       color: #065f46;
       margin-bottom: 1.5rem;
+    }
+
+    [data-theme="dark"] .status-pill {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #34d399;
     }
 
     .status-dot {
@@ -404,8 +478,8 @@
     }
 
     .btn-secondary:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
+      background: var(--bg-chip);
+      border-color: var(--border-focus);
       transform: translateY(-2px);
     }
 
@@ -450,8 +524,8 @@
       background: var(--bg-surface);
       border-radius: var(--radius-xl);
       padding: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.18), 0 0 0 1px rgba(226, 232, 240, 0.8);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.18), 0 0 0 1px var(--border-color);
       transition: var(--transition-base);
     }
 
@@ -466,6 +540,10 @@
       overflow: hidden;
       position: relative;
       background: linear-gradient(135deg, #e0e7ff, #fae8ff);
+    }
+
+    [data-theme="dark"] .profile-img-container {
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
     }
 
     .profile-img {
@@ -664,6 +742,10 @@
       justify-content: center;
     }
 
+    [data-theme="dark"] .project-media {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    }
+
     .project-img {
       width: 100%;
       height: 100%;
@@ -696,12 +778,12 @@
       width: 54px;
       height: 54px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.92);
+      background: var(--bg-surface);
       backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       color: var(--primary);
     }
 
@@ -709,8 +791,8 @@
       font-family: var(--font-display);
       font-weight: 700;
       font-size: 0.95rem;
-      color: #1e1b4b;
-      background: rgba(255, 255, 255, 0.8);
+      color: var(--text-main);
+      background: var(--bg-surface-translucent);
       padding: 0.25rem 0.75rem;
       border-radius: var(--radius-full);
       backdrop-filter: blur(4px);
@@ -724,6 +806,15 @@
     .grad-card-6 { background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 50%, #fef3c7 100%); }
     .grad-card-7 { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #c7d2fe 100%); }
     .grad-card-8 { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%); }
+
+    [data-theme="dark"] .grad-card-1 { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); }
+    [data-theme="dark"] .grad-card-2 { background: linear-gradient(135deg, #083344 0%, #172554 100%); }
+    [data-theme="dark"] .grad-card-3 { background: linear-gradient(135deg, #451a03 0%, #4c0519 100%); }
+    [data-theme="dark"] .grad-card-4 { background: linear-gradient(135deg, #064e3b 0%, #083344 100%); }
+    [data-theme="dark"] .grad-card-5 { background: linear-gradient(135deg, #3b0764 0%, #500724 100%); }
+    [data-theme="dark"] .grad-card-6 { background: linear-gradient(135deg, #431407 0%, #451a03 100%); }
+    [data-theme="dark"] .grad-card-7 { background: linear-gradient(135deg, #0c4a6e 0%, #1e1b4b 100%); }
+    [data-theme="dark"] .grad-card-8 { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
 
     .project-body {
       padding: 1.5rem;
@@ -744,13 +835,18 @@
       font-weight: 600;
       padding: 0.25rem 0.65rem;
       border-radius: var(--radius-full);
-      background: #f1f5f9;
-      color: #475569;
+      background: var(--bg-tag);
+      color: var(--text-tag);
     }
 
     .tag-featured {
       background: #e0e7ff;
       color: var(--primary);
+    }
+
+    [data-theme="dark"] .tag-featured {
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
     }
 
     .project-name {
@@ -820,7 +916,7 @@
     .timeline-items {
       position: relative;
       padding-left: 1.5rem;
-      border-left: 2px solid #e2e8f0;
+      border-left: 2px solid var(--border-color);
       display: flex;
       flex-direction: column;
       gap: 2rem;
@@ -872,8 +968,8 @@
       display: inline-block;
       font-size: 0.8rem;
       font-weight: 700;
-      background: #f1f5f9;
-      color: #334155;
+      background: var(--bg-tag);
+      color: var(--text-main);
       padding: 0.2rem 0.6rem;
       border-radius: var(--radius-full);
     }
@@ -936,7 +1032,7 @@
     }
 
     .skill-chip {
-      background: #f8fafc;
+      background: var(--bg-chip);
       border: 1px solid var(--border-color);
       padding: 0.4rem 0.85rem;
       border-radius: var(--radius-full);
@@ -1008,6 +1104,12 @@
       font-size: 1.35rem;
     }
 
+    [data-theme="dark"] .achieve-icon-wrap {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.25);
+      color: #fbbf24;
+    }
+
     .achieve-content h4 {
       font-family: var(--font-display);
       font-size: 1.05rem;
@@ -1026,6 +1128,11 @@
       padding: 0.2rem 0.6rem;
       border-radius: var(--radius-full);
       margin-top: 0.4rem;
+    }
+
+    [data-theme="dark"] .achieve-badge {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
     }
 
     /* ==========================================================================
@@ -1090,7 +1197,7 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      background: #ffffff;
+      background: var(--bg-surface);
       border: 1px solid var(--border-color);
       padding: 0.75rem 1.4rem;
       border-radius: var(--radius-full);
@@ -1131,7 +1238,8 @@
     }
 
     .modal-content {
-      background: #ffffff;
+      background: var(--bg-surface);
+      color: var(--text-main);
       border-radius: var(--radius-lg);
       max-width: 800px;
       width: 100%;
@@ -1140,6 +1248,7 @@
       position: relative;
       transform: scale(0.95);
       transition: transform 0.25s ease;
+      border: 1px solid var(--border-color);
     }
 
     .modal-overlay.active .modal-content {
@@ -1155,7 +1264,8 @@
     }
 
     .modal-close {
-      background: #f1f5f9;
+      background: var(--bg-tag);
+      color: var(--text-main);
       border: none;
       width: 32px;
       height: 32px;
@@ -1203,6 +1313,11 @@
       transition: var(--transition-base);
     }
 
+    [data-theme="dark"] .toast {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+    }
+
     .toast.show {
       transform: translateY(0);
       opacity: 1;
@@ -1233,7 +1348,7 @@
   <!-- Dynamic Scroll Reading Progress Beam -->
   <div class="scroll-tracer-bar" id="scrollTracer"></div>
 
-  <!-- Interactive Dynamic Robotics Grid Canvas (Reacts to Scroll & Mouse) -->
+  <!-- Interactive Dynamic Robotics Grid Canvas (Reacts to Scroll, Mouse & Theme) -->
   <canvas id="bg-canvas"></canvas>
 
   <!-- Ambient Light Gradients Background -->
@@ -1259,9 +1374,31 @@
         <li><a href="#contact" class="nav-link nav-cta">Let's Connect</a></li>
       </ul>
 
-      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
-        ☰
-      </button>
+      <div class="nav-right-actions">
+        <!-- Bright / Dark Mode Switcher -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Bright/Dark Mode" title="Toggle Theme">
+          <!-- Moon Icon (shown in bright mode) -->
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <!-- Sun Icon (shown in dark mode) -->
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+          ☰
+        </button>
+      </div>
     </nav>
   </header>
 
@@ -1942,6 +2079,11 @@
             <span>pshreyas016@gmail.com</span>
           </div>
 
+          <a href="tel:+918180916885" class="contact-pill-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>+91 8180916885</span>
+          </a>
+
           <a href="https://www.linkedin.com/in/shreyaspatil13/" target="_blank" class="contact-pill-item">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
             <span>LinkedIn</span>
@@ -1993,10 +2135,35 @@
   </div>
 
   <!-- ==========================================================================
-       DYNAMIC ENGINE: CANVAS GRID, SCROLL PARALLAX, 3D TILT & COUNTERS
+       DYNAMIC ENGINE: CANVAS GRID, THEME SWITCHER, 3D TILT & COUNTERS
        ========================================================================== -->
   <script>
-    // --- 1. DYNAMIC ROBOTICS / CAD GRID & SENSOR NODE CANVAS ---
+    // --- 0. BRIGHT / DARK MODE CONTROLLER & LOCALSTORAGE PERSISTENCE ---
+    const htmlEl = document.documentElement;
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+    // Retrieve saved theme or default to system preference
+    const savedTheme = localStorage.getItem('sp_portfolio_theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+    setTheme(initialTheme);
+
+    function setTheme(theme) {
+      htmlEl.setAttribute('data-theme', theme);
+      localStorage.setItem('sp_portfolio_theme', theme);
+    }
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlEl.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        showToast(newTheme === 'dark' ? 'Dark Mode Activated' : 'Bright Mode Activated');
+      });
+    }
+
+    // --- 1. DYNAMIC ROBOTICS / CAD GRID & SENSOR NODE CANVAS (THEME ADAPTIVE) ---
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
@@ -2004,7 +2171,6 @@
     let targetScrollY = scrollY;
     let mouse = { x: -1000, y: -1000, active: false };
 
-    // Responsive setup with device pixel ratio scaling
     function resizeCanvas() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = window.innerWidth;
@@ -2026,11 +2192,10 @@
         vx: (Math.random() - 0.5) * 0.45,
         vy: (Math.random() - 0.5) * 0.45,
         radius: Math.random() * 2 + 1.5,
-        depth: Math.random() * 0.6 + 0.4 // Parallax depth factor
+        depth: Math.random() * 0.6 + 0.4
       });
     }
 
-    // Mouse Tracking
     window.addEventListener('mousemove', (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
@@ -2041,48 +2206,43 @@
       mouse.active = false;
     });
 
-    // Scroll-Linked Parallax tracking
     window.addEventListener('scroll', () => {
       targetScrollY = window.scrollY;
       
-      // Update top scroll tracer beam
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       const progress = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
       const tracer = document.getElementById('scrollTracer');
       if (tracer) tracer.style.width = progress + '%';
     }, { passive: true });
 
-    // Main Canvas Render Loop (60 FPS)
     function renderCanvas() {
-      // Smooth interpolation for scroll inertia
       scrollY += (targetScrollY - scrollY) * 0.08;
-
       ctx.clearRect(0, 0, width, height);
 
-      // --- Draw Dynamic Coordinate Grid (CAD / Robotics Simulation Plane) ---
+      const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+
+      // --- Draw Dynamic Coordinate Grid (Adapts to Bright/Dark theme) ---
       const gridSize = 64;
       const offsetX = 0;
-      // Lines shift upward smoothly with parallax scroll
       const offsetY = -(scrollY * 0.35) % gridSize;
 
       ctx.beginPath();
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(99, 102, 241, 0.055)'; // Soft subtle indigo
+      // Grid line contrast calibrated per theme
+      ctx.strokeStyle = isDark ? 'rgba(99, 102, 241, 0.12)' : 'rgba(99, 102, 241, 0.055)';
 
-      // Vertical lines
       for (let x = offsetX; x <= width; x += gridSize) {
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
       }
-      // Horizontal lines
       for (let y = offsetY; y <= height; y += gridSize) {
         ctx.moveTo(0, y);
         ctx.lineTo(width, y);
       }
       ctx.stroke();
 
-      // Crosshairs / Grid Intersection Marks (Robotics Origin Points)
-      ctx.fillStyle = 'rgba(79, 70, 229, 0.12)';
+      // Crosshairs / Grid Intersection Marks
+      ctx.fillStyle = isDark ? 'rgba(129, 140, 248, 0.22)' : 'rgba(79, 70, 229, 0.12)';
       for (let x = offsetX; x <= width; x += gridSize * 2) {
         for (let y = offsetY; y <= height; y += gridSize * 2) {
           ctx.beginPath();
@@ -2091,31 +2251,26 @@
         }
       }
 
-      // --- Update and Draw Floating Sensor Nodes & Data Connections ---
+      // --- Floating Sensor Nodes & Data Connections ---
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
 
-        // Move nodes naturally
         node.x += node.vx;
         node.y += node.vy;
 
-        // Wrap around edges
         if (node.x < 0) node.x = width;
         if (node.x > width) node.x = 0;
         if (node.y < 0) node.y = height;
         if (node.y > height) node.y = 0;
 
-        // Dynamic parallax shift calculated from scroll
         const drawY = (node.y - (scrollY * node.depth * 0.15)) % height;
         const finalY = drawY < 0 ? drawY + height : drawY;
 
-        // Node Glow Dot
         ctx.beginPath();
         ctx.arc(node.x, finalY, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(79, 70, 229, 0.38)';
+        ctx.fillStyle = isDark ? 'rgba(129, 140, 248, 0.55)' : 'rgba(79, 70, 229, 0.38)';
         ctx.fill();
 
-        // Connect nearby nodes with subtle data telemetry lines
         for (let j = i + 1; j < nodes.length; j++) {
           const other = nodes[j];
           const otherY = (other.y - (scrollY * other.depth * 0.15)) % height;
@@ -2129,14 +2284,13 @@
             ctx.beginPath();
             ctx.moveTo(node.x, finalY);
             ctx.lineTo(other.x, finalOtherY);
-            const alpha = (1 - dist / 130) * 0.14;
+            const alpha = (1 - dist / 130) * (isDark ? 0.25 : 0.14);
             ctx.strokeStyle = `rgba(6, 182, 212, ${alpha})`;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }
 
-        // Interactive mouse connection line
         if (mouse.active) {
           const mdx = node.x - mouse.x;
           const mdy = finalY - mouse.y;
@@ -2146,7 +2300,7 @@
             ctx.beginPath();
             ctx.moveTo(node.x, finalY);
             ctx.lineTo(mouse.x, mouse.y);
-            const mAlpha = (1 - mDist / 160) * 0.28;
+            const mAlpha = (1 - mDist / 160) * (isDark ? 0.42 : 0.28);
             ctx.strokeStyle = `rgba(236, 72, 153, ${mAlpha})`;
             ctx.lineWidth = 1.1;
             ctx.stroke();
@@ -2189,13 +2343,12 @@
         const target = parseFloat(el.getAttribute('data-target'));
         const decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
         const suffix = el.getAttribute('data-suffix') || '';
-        const duration = 1600; // ms
+        const duration = 1600;
         const startTime = performance.now();
 
         function updateCounter(currentTime) {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
-          // Ease-out cubic
           const easeProgress = 1 - Math.pow(1 - progress, 3);
           const currentVal = (easeProgress * target).toFixed(decimals);
 
@@ -2212,7 +2365,6 @@
       });
     }
 
-    // Trigger counter when scrolled into view
     const metricsBar = document.querySelector('.metrics-bar');
     if (metricsBar) {
       const observer = new IntersectionObserver((entries) => {
@@ -2237,7 +2389,6 @@
       });
     });
 
-    // Project Category Filtering
     const filterBtns = document.querySelectorAll('.filter-btn[data-filter]');
     const projectCards = document.querySelectorAll('.project-card');
 
@@ -2257,7 +2408,6 @@
       });
     });
 
-    // Copy to clipboard helper
     function copyContact(text) {
       navigator.clipboard.writeText(text).then(() => {
         showToast('Copied "' + text + '" to clipboard!');
@@ -2276,7 +2426,6 @@
       }, 3000);
     }
 
-    // Modal Image Preview Logic
     const imageModal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImg');
     const modalTitle = document.getElementById('modalTitle');
@@ -2310,7 +2459,6 @@
       }
     }
 
-    // Active Section Link Highlighting on Scroll
     window.addEventListener('scroll', () => {
       const scrollPos = window.scrollY + 180;
       document.querySelectorAll('section[id]').forEach(section => {
