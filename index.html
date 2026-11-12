@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,7 +13,7 @@
 
   <style>
     /* ==========================================================================
-       DESIGN SYSTEM - MK1 INSPIRED LIGHT VIBRANT THEME
+       DESIGN SYSTEM - DUAL THEME TOKENS (LIGHT & DARK)
        ========================================================================== */
     :root {
       --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -28,12 +28,16 @@
       --accent-amber: #f59e0b;
       --accent-emerald: #10b981;
 
-      /* Neutrals & Surfaces */
+      /* Light Theme Defaults */
       --bg-base: #f8fafc;
       --bg-surface: #ffffff;
       --bg-surface-translucent: rgba(255, 255, 255, 0.85);
+      --bg-chip: #f8fafc;
+      --bg-tag: #f1f5f9;
+      --text-tag: #475569;
       --border-color: #e2e8f0;
       --border-focus: #c7d2fe;
+      --border-subtle: rgba(255, 255, 255, 0.85);
 
       /* Text Colors */
       --text-main: #0f172a;
@@ -60,6 +64,30 @@
       --transition-base: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    /* Dark Mode Variable Overrides */
+    [data-theme="dark"] {
+      --bg-base: #0b0f19;
+      --bg-surface: #131c2e;
+      --bg-surface-translucent: rgba(19, 28, 46, 0.85);
+      --bg-chip: #1a253a;
+      --bg-tag: #1e293b;
+      --text-tag: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.09);
+      --border-focus: #6366f1;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+
+      --grad-mesh: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.16) 0px, transparent 50%),
+                    radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
+                    radial-gradient(at 50% 100%, rgba(6, 182, 212, 0.14) 0px, transparent 50%);
+
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 20px 35px -8px rgba(79, 70, 229, 0.3), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    }
+
     /* Base Reset */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -82,6 +110,7 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     a {
@@ -167,7 +196,7 @@
     }
 
     /* ==========================================================================
-       NAVIGATION
+       NAVIGATION & THEME TOGGLE
        ========================================================================== */
     .navbar {
       position: fixed;
@@ -184,7 +213,7 @@
       background: var(--bg-surface-translucent);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--border-subtle);
       box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
       border-radius: var(--radius-full);
       display: flex;
@@ -253,6 +282,45 @@
       box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
     }
 
+    /* Dedicated Theme Switcher Button */
+    .theme-toggle-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-base);
+      box-shadow: var(--shadow-sm);
+      margin-left: 0.35rem;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+      transform: rotate(15deg) scale(1.05);
+    }
+
+    .theme-toggle-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .icon-sun { display: none; }
+    .icon-moon { display: block; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     .mobile-toggle {
       display: none;
       background: none;
@@ -314,6 +382,12 @@
       font-weight: 600;
       color: #065f46;
       margin-bottom: 1.5rem;
+    }
+
+    [data-theme="dark"] .status-pill {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #34d399;
     }
 
     .status-dot {
@@ -404,8 +478,8 @@
     }
 
     .btn-secondary:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
+      background: var(--bg-chip);
+      border-color: var(--border-focus);
       transform: translateY(-2px);
     }
 
@@ -450,8 +524,8 @@
       background: var(--bg-surface);
       border-radius: var(--radius-xl);
       padding: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.18), 0 0 0 1px rgba(226, 232, 240, 0.8);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.18), 0 0 0 1px var(--border-color);
       transition: var(--transition-base);
     }
 
@@ -466,6 +540,10 @@
       overflow: hidden;
       position: relative;
       background: linear-gradient(135deg, #e0e7ff, #fae8ff);
+    }
+
+    [data-theme="dark"] .profile-img-container {
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
     }
 
     .profile-img {
@@ -664,6 +742,10 @@
       justify-content: center;
     }
 
+    [data-theme="dark"] .project-media {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    }
+
     .project-img {
       width: 100%;
       height: 100%;
@@ -696,12 +778,12 @@
       width: 54px;
       height: 54px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.92);
+      background: var(--bg-surface);
       backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       color: var(--primary);
     }
 
@@ -709,8 +791,8 @@
       font-family: var(--font-display);
       font-weight: 700;
       font-size: 0.95rem;
-      color: #1e1b4b;
-      background: rgba(255, 255, 255, 0.8);
+      color: var(--text-main);
+      background: var(--bg-surface-translucent);
       padding: 0.25rem 0.75rem;
       border-radius: var(--radius-full);
       backdrop-filter: blur(4px);
@@ -724,6 +806,15 @@
     .grad-card-6 { background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 50%, #fef3c7 100%); }
     .grad-card-7 { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #c7d2fe 100%); }
     .grad-card-8 { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%); }
+
+    [data-theme="dark"] .grad-card-1 { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); }
+    [data-theme="dark"] .grad-card-2 { background: linear-gradient(135deg, #083344 0%, #172554 100%); }
+    [data-theme="dark"] .grad-card-3 { background: linear-gradient(135deg, #451a03 0%, #4c0519 100%); }
+    [data-theme="dark"] .grad-card-4 { background: linear-gradient(135deg, #064e3b 0%, #083344 100%); }
+    [data-theme="dark"] .grad-card-5 { background: linear-gradient(135deg, #3b0764 0%, #500724 100%); }
+    [data-theme="dark"] .grad-card-6 { background: linear-gradient(135deg, #431407 0%, #451a03 100%); }
+    [data-theme="dark"] .grad-card-7 { background: linear-gradient(135deg, #0c4a6e 0%, #1e1b4b 100%); }
+    [data-theme="dark"] .grad-card-8 { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
 
     .project-body {
       padding: 1.5rem;
@@ -744,13 +835,18 @@
       font-weight: 600;
       padding: 0.25rem 0.65rem;
       border-radius: var(--radius-full);
-      background: #f1f5f9;
-      color: #475569;
+      background: var(--bg-tag);
+      color: var(--text-tag);
     }
 
     .tag-featured {
       background: #e0e7ff;
       color: var(--primary);
+    }
+
+    [data-theme="dark"] .tag-featured {
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
     }
 
     .project-name {
@@ -820,7 +916,7 @@
     .timeline-items {
       position: relative;
       padding-left: 1.5rem;
-      border-left: 2px solid #e2e8f0;
+      border-left: 2px solid var(--border-color);
       display: flex;
       flex-direction: column;
       gap: 2rem;
@@ -828,18 +924,77 @@
 
     .timeline-item {
       position: relative;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .timeline-item:hover {
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-focus);
+    }
+
+    .timeline-item-inner {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+    }
+
+    .timeline-media {
+      position: relative;
+      min-height: 175px;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timeline-item:hover .project-img {
+      transform: scale(1.05);
+    }
+
+    .timeline-content-box {
+      padding: 1.35rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .timeline-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 680px) {
+      .timeline-item-inner {
+        grid-template-columns: 1fr;
+      }
+      .timeline-media {
+        height: 165px;
+      }
     }
 
     .timeline-marker {
       position: absolute;
       left: -1.95rem;
-      top: 0.25rem;
+      top: 1.5rem;
       width: 14px;
       height: 14px;
       border-radius: 50%;
       background: var(--bg-surface);
       border: 3px solid var(--primary);
       transition: transform 0.2s ease;
+      z-index: 3;
     }
 
     .timeline-item:hover .timeline-marker {
@@ -856,7 +1011,7 @@
     }
 
     .timeline-heading {
-      font-size: 1.05rem;
+      font-size: 1.08rem;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 0.2rem;
@@ -872,8 +1027,8 @@
       display: inline-block;
       font-size: 0.8rem;
       font-weight: 700;
-      background: #f1f5f9;
-      color: #334155;
+      background: var(--bg-tag);
+      color: var(--text-main);
       padding: 0.2rem 0.6rem;
       border-radius: var(--radius-full);
     }
@@ -883,8 +1038,9 @@
        ========================================================================== */
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1.75rem;
+      perspective: 1200px;
     }
 
     .skill-card {
@@ -892,39 +1048,58 @@
       backdrop-filter: blur(16px);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      padding: 1.75rem;
+      overflow: hidden;
       box-shadow: var(--shadow-card);
-      transition: var(--transition-base);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
     .skill-card:hover {
       border-color: var(--primary-light);
-      transform: translateY(-4px);
       box-shadow: var(--shadow-hover);
+    }
+
+    .skill-card:hover .project-img {
+      transform: scale(1.05);
+    }
+
+    .skill-media {
+      height: 165px;
+    }
+
+    .skill-card-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
     }
 
     .skill-card-head {
       display: flex;
       align-items: center;
       gap: 0.85rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.15rem;
     }
 
     .skill-card-icon {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       background: var(--primary-glow);
       color: var(--primary);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
+      flex-shrink: 0;
     }
 
     .skill-card-title {
       font-family: var(--font-display);
-      font-size: 1.1rem;
+      font-size: 1.12rem;
       font-weight: 700;
       color: var(--text-main);
     }
@@ -933,14 +1108,15 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .skill-chip {
-      background: #f8fafc;
+      background: var(--bg-chip);
       border: 1px solid var(--border-color);
-      padding: 0.4rem 0.85rem;
+      padding: 0.38rem 0.82rem;
       border-radius: var(--radius-full);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       color: var(--text-main);
       transition: var(--transition-base);
@@ -954,12 +1130,13 @@
     }
 
     /* ==========================================================================
-       AWARDS & ACHIEVEMENTS SECTION
+       AWARDS & ACHIEVEMENTS SECTION (SHOWCASE CARDS)
        ========================================================================== */
     .achieve-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1.5rem;
+      gap: 2rem;
+      perspective: 1200px;
     }
 
     .achieve-card {
@@ -967,53 +1144,48 @@
       backdrop-filter: blur(16px);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      padding: 1.5rem;
+      overflow: hidden;
       box-shadow: var(--shadow-card);
       display: flex;
-      gap: 1.25rem;
-      align-items: flex-start;
-      transition: var(--transition-base);
+      flex-direction: column;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
       position: relative;
-      overflow: hidden;
-      cursor: pointer;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
     .achieve-card:hover {
-      transform: translateY(-4px);
       box-shadow: var(--shadow-hover);
-      border-color: #fde68a;
+      border-color: var(--border-focus);
     }
 
-    .achieve-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(to bottom, #f59e0b, #ec4899);
+    .achieve-card:hover .project-img {
+      transform: scale(1.05);
     }
 
-    .achieve-icon-wrap {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: #fffbeb;
-      border: 1px solid #fef3c7;
-      color: #d97706;
+    .achieve-media {
+      height: 185px;
+    }
+
+    .achieve-body {
+      padding: 1.45rem 1.5rem;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 1.35rem;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .achieve-content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
     }
 
     .achieve-content h4 {
       font-family: var(--font-display);
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.45rem;
       line-height: 1.35;
     }
 
@@ -1023,9 +1195,13 @@
       font-weight: 700;
       color: #92400e;
       background: #fef3c7;
-      padding: 0.2rem 0.6rem;
+      padding: 0.25rem 0.7rem;
       border-radius: var(--radius-full);
-      margin-top: 0.4rem;
+    }
+
+    [data-theme="dark"] .achieve-badge {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
     }
 
     /* ==========================================================================
@@ -1090,7 +1266,7 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      background: #ffffff;
+      background: var(--bg-surface);
       border: 1px solid var(--border-color);
       padding: 0.75rem 1.4rem;
       border-radius: var(--radius-full);
@@ -1131,7 +1307,8 @@
     }
 
     .modal-content {
-      background: #ffffff;
+      background: var(--bg-surface);
+      color: var(--text-main);
       border-radius: var(--radius-lg);
       max-width: 800px;
       width: 100%;
@@ -1140,6 +1317,7 @@
       position: relative;
       transform: scale(0.95);
       transition: transform 0.25s ease;
+      border: 1px solid var(--border-color);
     }
 
     .modal-overlay.active .modal-content {
@@ -1155,7 +1333,8 @@
     }
 
     .modal-close {
-      background: #f1f5f9;
+      background: var(--bg-tag);
+      color: var(--text-main);
       border: none;
       width: 32px;
       height: 32px;
@@ -1203,6 +1382,11 @@
       transition: var(--transition-base);
     }
 
+    [data-theme="dark"] .toast {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+    }
+
     .toast.show {
       transform: translateY(0);
       opacity: 1;
@@ -1233,7 +1417,7 @@
   <!-- Dynamic Scroll Reading Progress Beam -->
   <div class="scroll-tracer-bar" id="scrollTracer"></div>
 
-  <!-- Interactive Dynamic Robotics Grid Canvas (Reacts to Scroll & Mouse) -->
+  <!-- Interactive Dynamic Robotics Grid Canvas (Reacts to Scroll, Mouse & Theme) -->
   <canvas id="bg-canvas"></canvas>
 
   <!-- Ambient Light Gradients Background -->
@@ -1259,9 +1443,31 @@
         <li><a href="#contact" class="nav-link nav-cta">Let's Connect</a></li>
       </ul>
 
-      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
-        ☰
-      </button>
+      <div class="nav-right-actions">
+        <!-- Bright / Dark Mode Switcher -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Bright/Dark Mode" title="Toggle Theme">
+          <!-- Moon Icon (shown in bright mode) -->
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <!-- Sun Icon (shown in dark mode) -->
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+          ☰
+        </button>
+      </div>
     </nav>
   </header>
 
@@ -1358,7 +1564,7 @@
         <p class="section-desc">Academic foundation and formal coursework in robotics, embedded systems, and applied engineering.</p>
       </div>
 
-      <div style="max-width: 860px; margin: 0 auto;">
+      <div style="max-width: 920px; margin: 0 auto;">
         <div class="timeline-wrap">
           <div class="timeline-title-head">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
@@ -1367,39 +1573,96 @@
 
           <div class="timeline-items">
             <!-- Degree 1 -->
-            <div class="timeline-item">
+            <div class="timeline-item data-tilt">
               <div class="timeline-marker"></div>
-              <div class="timeline-year">2022 — 2026</div>
-              <div class="timeline-heading">B.Tech in Automation &amp; Robotics Engineering</div>
-              <div class="timeline-place">Sharad Institute of Technology &amp; College of Engineering, Yadrav</div>
-              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.5rem;">
-                <span class="timeline-score" style="background: #e0e7ff; color: var(--primary);">CGPA: 8.16 / 10.0</span>
-                <span class="timeline-score">Final Year Engineering</span>
+              <div class="timeline-item-inner">
+                <div class="timeline-media grad-card-1">
+                  <img src="assets/education/btech-sit.jpg" alt="B.Tech Automation and Robotics Engineering" class="project-img" onerror="this.style.display='none'" />
+                  <div class="project-fallback-art">
+                    <div class="art-badge-icon">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                    </div>
+                    <span class="art-title">B.Tech Robotics</span>
+                  </div>
+                </div>
+                <div class="timeline-content-box">
+                  <div>
+                    <div class="timeline-year">2022 — 2026</div>
+                    <div class="timeline-heading">B.Tech in Automation &amp; Robotics Engineering</div>
+                    <div class="timeline-place">Sharad Institute of Technology &amp; College of Engineering, Yadrav</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.6rem;">
+                      <span class="timeline-score" style="background: #e0e7ff; color: var(--primary);">CGPA: 8.16 / 10.0</span>
+                      <span class="timeline-score">Final Year Engineering</span>
+                    </div>
+                  </div>
+                  <div class="timeline-footer">
+                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">Academic Record &amp; Transcript</span>
+                    <button class="filter-btn" style="padding: 0.3rem 0.85rem; font-size: 0.75rem;" onclick="openImageModal('assets/education/btech-sit.jpg', 'B.Tech in Automation & Robotics — SITCOE')">Preview</button>
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- Degree 2 -->
-            <div class="timeline-item">
+            <div class="timeline-item data-tilt">
               <div class="timeline-marker"></div>
-              <div class="timeline-year">2021 — 2022</div>
-              <div class="timeline-heading">Higher Secondary Certificate (H.S.C - 12th)</div>
-              <div class="timeline-place">Shraddha Institute of Career Development, Ichalkaranji</div>
-              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.5rem;">
-                <span class="timeline-score" style="background: #ecfdf5; color: #065f46;">Score: 84.17%</span>
-                <span class="timeline-score">Mathematics: 100/100</span>
-                <span class="timeline-score">Chemistry: 97/100</span>
-                <span class="timeline-score">Physics: 86/100</span>
+              <div class="timeline-item-inner">
+                <div class="timeline-media grad-card-4">
+                  <img src="assets/education/hsc-shraddha.jpg" alt="Higher Secondary Certificate H.S.C" class="project-img" onerror="this.style.display='none'" />
+                  <div class="project-fallback-art">
+                    <div class="art-badge-icon">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </div>
+                    <span class="art-title">H.S.C Science</span>
+                  </div>
+                </div>
+                <div class="timeline-content-box">
+                  <div>
+                    <div class="timeline-year">2021 — 2022</div>
+                    <div class="timeline-heading">Higher Secondary Certificate (H.S.C - 12th)</div>
+                    <div class="timeline-place">Shraddha Institute of Career Development, Ichalkaranji</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.6rem;">
+                      <span class="timeline-score" style="background: #ecfdf5; color: #065f46;">Score: 84.17%</span>
+                      <span class="timeline-score">Mathematics: 100/100</span>
+                      <span class="timeline-score">Chemistry: 97/100</span>
+                      <span class="timeline-score">Physics: 86/100</span>
+                    </div>
+                  </div>
+                  <div class="timeline-footer">
+                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">12th Board Marksheet</span>
+                    <button class="filter-btn" style="padding: 0.3rem 0.85rem; font-size: 0.75rem;" onclick="openImageModal('assets/education/hsc-shraddha.jpg', 'Higher Secondary Certificate (H.S.C)')">Preview</button>
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- Degree 3 -->
-            <div class="timeline-item">
+            <div class="timeline-item data-tilt">
               <div class="timeline-marker"></div>
-              <div class="timeline-year">2019 — 2020</div>
-              <div class="timeline-heading">Secondary School Certificate (S.S.C - 10th)</div>
-              <div class="timeline-place">M. G. Shaha Vidya Mandir &amp; Jr. College, Bahubali</div>
-              <div style="margin-top: 0.5rem;">
-                <span class="timeline-score" style="background: #fef3c7; color: #92400e;">Percentage: 88.00%</span>
+              <div class="timeline-item-inner">
+                <div class="timeline-media grad-card-3">
+                  <img src="assets/education/ssc-mgshaha.jpg" alt="Secondary School Certificate S.S.C" class="project-img" onerror="this.style.display='none'" />
+                  <div class="project-fallback-art">
+                    <div class="art-badge-icon">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                    </div>
+                    <span class="art-title">S.S.C Board</span>
+                  </div>
+                </div>
+                <div class="timeline-content-box">
+                  <div>
+                    <div class="timeline-year">2019 — 2020</div>
+                    <div class="timeline-heading">Secondary School Certificate (S.S.C - 10th)</div>
+                    <div class="timeline-place">M. G. Shaha Vidya Mandir &amp; Jr. College, Bahubali</div>
+                    <div style="margin-top: 0.6rem;">
+                      <span class="timeline-score" style="background: #fef3c7; color: #92400e;">Percentage: 88.00%</span>
+                    </div>
+                  </div>
+                  <div class="timeline-footer">
+                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">10th Board Marksheet</span>
+                    <button class="filter-btn" style="padding: 0.3rem 0.85rem; font-size: 0.75rem;" onclick="openImageModal('assets/education/ssc-mgshaha.jpg', 'Secondary School Certificate (S.S.C)')">Preview</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1684,64 +1947,124 @@
 
       <div class="skills-grid">
         <!-- Robot Programming -->
-        <div class="skill-card">
-          <div class="skill-card-head">
-            <div class="skill-card-icon">🤖</div>
-            <h3 class="skill-card-title">Robot Simulation</h3>
+        <div class="skill-card data-tilt">
+          <div class="project-media skill-media grad-card-2">
+            <img src="assets/skills/skill-simulation.jpg" alt="Robot Simulation Setup" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+              </div>
+              <span class="art-title">Workcell Simulation</span>
+            </div>
           </div>
-          <div class="skill-chips">
-            <span class="skill-chip">Fanuc RoboGuide</span>
-            <span class="skill-chip">Mitsubishi RT ToolBox</span>
-            <span class="skill-chip">Siemens TecnoMatix</span>
-            <span class="skill-chip">Fanuc iRVision</span>
-            <span class="skill-chip">ROS 2 TurtleSim</span>
+          <div class="skill-card-body">
+            <div class="skill-card-head">
+              <div class="skill-card-icon">🤖</div>
+              <h3 class="skill-card-title">Robot Simulation</h3>
+            </div>
+            <div class="skill-chips">
+              <span class="skill-chip">Fanuc RoboGuide</span>
+              <span class="skill-chip">Mitsubishi RT ToolBox</span>
+              <span class="skill-chip">Siemens TecnoMatix</span>
+              <span class="skill-chip">Fanuc iRVision</span>
+              <span class="skill-chip">ROS 2 TurtleSim</span>
+            </div>
+            <div class="project-footer">
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">Workcell Samples</span>
+              <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/skills/skill-simulation.jpg', 'Robot Simulation & Digital Workcells')">Preview</button>
+            </div>
           </div>
         </div>
 
         <!-- CAD & Mechanical -->
-        <div class="skill-card">
-          <div class="skill-card-head">
-            <div class="skill-card-icon">📐</div>
-            <h3 class="skill-card-title">CAD &amp; Digital Twin</h3>
+        <div class="skill-card data-tilt">
+          <div class="project-media skill-media grad-card-1">
+            <img src="assets/skills/skill-cad.jpg" alt="CAD & Digital Twin Models" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </div>
+              <span class="art-title">3D CAD Assemblies</span>
+            </div>
           </div>
-          <div class="skill-chips">
-            <span class="skill-chip">Autodesk Fusion 360</span>
-            <span class="skill-chip">SolidWorks</span>
-            <span class="skill-chip">PTC Creo</span>
-            <span class="skill-chip">E-PLAN Pro V8</span>
-            <span class="skill-chip">3D Rapid Prototyping</span>
+          <div class="skill-card-body">
+            <div class="skill-card-head">
+              <div class="skill-card-icon">📐</div>
+              <h3 class="skill-card-title">CAD &amp; Digital Twin</h3>
+            </div>
+            <div class="skill-chips">
+              <span class="skill-chip">Autodesk Fusion 360</span>
+              <span class="skill-chip">SolidWorks</span>
+              <span class="skill-chip">PTC Creo</span>
+              <span class="skill-chip">E-PLAN Pro V8</span>
+              <span class="skill-chip">3D Rapid Prototyping</span>
+            </div>
+            <div class="project-footer">
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">CAD Blueprints</span>
+              <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/skills/skill-cad.jpg', 'CAD Modeling & Digital Twin Assemblies')">Preview</button>
+            </div>
           </div>
         </div>
 
         <!-- Embedded & Automation -->
-        <div class="skill-card">
-          <div class="skill-card-head">
-            <div class="skill-card-icon">⚡</div>
-            <h3 class="skill-card-title">Hardware &amp; PLC</h3>
+        <div class="skill-card data-tilt">
+          <div class="project-media skill-media grad-card-3">
+            <img src="assets/skills/skill-hardware.jpg" alt="Embedded Hardware & PLC Wiring" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+              </div>
+              <span class="art-title">Embedded &amp; PLC Panels</span>
+            </div>
           </div>
-          <div class="skill-chips">
-            <span class="skill-chip">ESP32 / ESP8266</span>
-            <span class="skill-chip">Arduino / Atmel</span>
-            <span class="skill-chip">Raspberry Pi</span>
-            <span class="skill-chip">Delta PLC</span>
-            <span class="skill-chip">CODESYS</span>
-            <span class="skill-chip">SCADA Systems</span>
+          <div class="skill-card-body">
+            <div class="skill-card-head">
+              <div class="skill-card-icon">⚡</div>
+              <h3 class="skill-card-title">Hardware &amp; PLC</h3>
+            </div>
+            <div class="skill-chips">
+              <span class="skill-chip">ESP32 / ESP8266</span>
+              <span class="skill-chip">Arduino / Atmel</span>
+              <span class="skill-chip">Raspberry Pi</span>
+              <span class="skill-chip">Delta PLC</span>
+              <span class="skill-chip">CODESYS</span>
+              <span class="skill-chip">SCADA Systems</span>
+            </div>
+            <div class="project-footer">
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">Hardware Bench</span>
+              <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/skills/skill-hardware.jpg', 'Embedded Hardware & PLC Control Setup')">Preview</button>
+            </div>
           </div>
         </div>
 
         <!-- Programming & Developer Tools -->
-        <div class="skill-card">
-          <div class="skill-card-head">
-            <div class="skill-card-icon">💻</div>
-            <h3 class="skill-card-title">Languages &amp; Tools</h3>
+        <div class="skill-card data-tilt">
+          <div class="project-media skill-media grad-card-7">
+            <img src="assets/skills/skill-coding.jpg" alt="Firmware & Vision Development" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <span class="art-title">Firmware &amp; Vision Stack</span>
+            </div>
           </div>
-          <div class="skill-chips">
-            <span class="skill-chip">C / C++</span>
-            <span class="skill-chip">Python</span>
-            <span class="skill-chip">Java</span>
-            <span class="skill-chip">Linux OS</span>
-            <span class="skill-chip">Git &amp; GitHub</span>
-            <span class="skill-chip">VS Code</span>
+          <div class="skill-card-body">
+            <div class="skill-card-head">
+              <div class="skill-card-icon">💻</div>
+              <h3 class="skill-card-title">Languages &amp; Tools</h3>
+            </div>
+            <div class="skill-chips">
+              <span class="skill-chip">C / C++</span>
+              <span class="skill-chip">Python</span>
+              <span class="skill-chip">Java</span>
+              <span class="skill-chip">Linux OS</span>
+              <span class="skill-chip">Git &amp; GitHub</span>
+              <span class="skill-chip">VS Code</span>
+            </div>
+            <div class="project-footer">
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">Dev Environment</span>
+              <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/skills/skill-coding.jpg', 'Firmware & Computer Vision Stack')">Preview</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1758,77 +2081,205 @@
       </div>
 
       <div class="achieve-grid">
-        <div class="achieve-card" onclick="openImageModal('assets/awards/award-impetus2025.jpg', 'Winner - Impetus 2025')">
-          <div class="achieve-icon-wrap">🏆</div>
-          <div class="achieve-content">
-            <h4>Winner – Project Competition</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted);">Impetus 2025 (National Level)</p>
-            <span class="achieve-badge">National First Place</span>
+        <!-- Award 1 -->
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-3">
+            <img src="assets/awards/award-impetus2025.jpg" alt="Winner - Impetus 2025" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon" style="color: #d97706;">🏆</div>
+              <span class="art-title">National 1st Place</span>
+            </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge">National First Place</span>
+              <span class="tag">Impetus 2025</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Winner – Project Competition</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Impetus 2025 (National Level Engineering Project Showcase)</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Trophy &amp; Certificate</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/awards/award-impetus2025.jpg', 'Winner – Project Competition (Impetus 2025)')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
-        <div class="achieve-card" onclick="openImageModal('assets/awards/award-fusion2025.jpg', 'Fusion Master 2025')">
-          <div class="achieve-icon-wrap">🥈</div>
-          <div class="achieve-content">
-            <h4>2nd Runner-Up – Fusion Master</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted);">Impetus 2025 (National CAD Modeling)</p>
-            <span class="achieve-badge">CAD Excellence</span>
+        <!-- Award 2 -->
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-1">
+            <img src="assets/awards/award-fusion2025.jpg" alt="Runner-Up - Fusion Master 2025" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon" style="color: #4f46e5;">🥈</div>
+              <span class="art-title">CAD Excellence</span>
+            </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge">CAD Excellence</span>
+              <span class="tag">Fusion 360</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Runner-Up – Fusion Master</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Impetus 2025 (National 3D CAD Modeling Championship)</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Award Moment</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/awards/award-fusion2025.jpg', 'Runner-Up – Fusion Master (Impetus 2025)')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
-        <div class="achieve-card" onclick="openImageModal('assets/awards/award-ecad2025.jpg', 'Winner - E-CAD Mania 2025')">
-          <div class="achieve-icon-wrap">⚡</div>
-          <div class="achieve-content">
-            <h4>Winner – E-CAD Mania</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted);">Innovation 2025 (National Level)</p>
-            <span class="achieve-badge">National First Place (Electrical CAD Winner)</span>
+        <!-- Award 3 -->
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-6">
+            <img src="assets/awards/award-ecad2025.jpg" alt="Winner - E-CAD Mania 2025" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon" style="color: #ea580c;">⚡</div>
+              <span class="art-title">Electrical CAD Winner</span>
+            </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge">National First Place</span>
+              <span class="tag">Innovation 2025</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Winner – E-CAD Mania</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Innovation 2025 (National Level Electrical CAD Winner)</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Winner Proof</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/awards/award-ecad2025.jpg', 'Winner – E-CAD Mania (Innovation 2025)')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
-        <div class="achieve-card" onclick="openImageModal('assets/awards/award-deutsch2025.jpg', 'Winner - VolksFest Deutsch')">
-          <div class="achieve-icon-wrap">🗣️</div>
-          <div class="achieve-content">
-            <h4>Winner – Deutsch Presentation</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted);">VolksFest 2025 (German Club)</p>
-            <span class="achieve-badge">Multilingual Presentation</span>
+        <!-- Award 4 -->
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-5">
+            <img src="assets/awards/award-deutsch2025.jpg" alt="Winner - VolksFest Deutsch" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon" style="color: #9333ea;">🗣️</div>
+              <span class="art-title">Deutsch Presentation</span>
+            </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge">Multilingual Presentation</span>
+              <span class="tag">VolksFest 2025</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Winner – Deutsch Presentation</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">VolksFest 2025 (German Club Technical Presentation)</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Certificate View</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/awards/award-deutsch2025.jpg', 'Winner – Deutsch Presentation (VolksFest 2025)')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
-        <div class="achieve-card" onclick="openImageModal('assets/awards/award-robosoccer.jpg', 'Robo Soccer 2023')">
-          <div class="achieve-icon-wrap">⚽</div>
-          <div class="achieve-content">
-            <h4>Runner-Up – Robo Soccer</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted);">Impetus 2023 (National Robotics)</p>
-            <span class="achieve-badge">National Finalist</span>
+        <!-- Award 5 -->
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-4">
+            <img src="assets/awards/award-robosoccer.jpg" alt="Robo Soccer 2023" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon" style="color: #059669;">⚽</div>
+              <span class="art-title">Robo Soccer Arena</span>
+            </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge">National Finalist</span>
+              <span class="tag">Impetus 2023</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Runner-Up – Robo Soccer</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Impetus 2023 (National Robotics Competition)</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Bot &amp; Award</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/awards/award-robosoccer.jpg', 'Runner-Up – Robo Soccer (Impetus 2023)')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
-        <div class="achieve-card" onclick="openImageModal('assets/awards/award-robosumo.jpg', 'Robo Sumo')">
-          <div class="achieve-icon-wrap">🤖</div>
-          <div class="achieve-content">
-            <h4>2nd Runner-Up – Robo Sumo</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted);">National Level Robotics Combat</p>
-            <span class="achieve-badge">Combat Robotics</span>
+        <!-- Award 6 -->
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-2">
+            <img src="assets/awards/award-robosumo.jpg" alt="Robo Sumo" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon" style="color: #0284c7;">🤖</div>
+              <span class="art-title">Combat Robotics</span>
+            </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge">Combat Robotics</span>
+              <span class="tag">National Level</span>
+            </div>
+            <div class="achieve-content">
+              <h4>2nd Runner-Up – Robo Sumo</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">National Level Autonomous &amp; RC Robotics Combat</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Match &amp; Trophy</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/awards/award-robosumo.jpg', '2nd Runner-Up – Robo Sumo')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
-        <div class="achieve-card">
-          <div class="achieve-icon-wrap">🎖️</div>
-          <div class="achieve-content">
-            <h4>Vice President</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted);">Automation &amp; Robotics Department</p>
-            <span class="achieve-badge">Student Leadership</span>
+        <!-- Award 7 -->
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-7">
+            <img src="assets/awards/award-vp.jpg" alt="Vice President - Automation and Robotics Department" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon" style="color: #4f46e5;">🎖️</div>
+              <span class="art-title">Department Leadership</span>
+            </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge">Student Leadership</span>
+              <span class="tag">Robotics Dept</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Vice President</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Automation &amp; Robotics Department Student Association</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Appointment Badge</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/awards/award-vp.jpg', 'Vice President – Automation & Robotics Department')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
-        <div class="achieve-card">
-          <div class="achieve-icon-wrap">👥</div>
-          <div class="achieve-content">
-            <h4>Lead Event Organizer</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted);">Impetus 2024, Innovation 2024 &amp; 2025</p>
-            <span class="achieve-badge">Event Coordination</span>
+        <!-- Award 8 -->
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-8">
+            <img src="assets/awards/award-organizer.jpg" alt="Lead Event Organizer" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon" style="color: #334155;">👥</div>
+              <span class="art-title">National Symposiums</span>
+            </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge">Event Coordination</span>
+              <span class="tag">2024 – 2025</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Lead Event Organizer</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Impetus 2024, Innovation 2024 &amp; 2025 National Events</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Event Highlights</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/awards/award-organizer.jpg', 'Lead Event Organizer – Impetus & Innovation')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -1842,85 +2293,157 @@
         <p class="section-desc">Industry-accredited qualifications covering robotics simulation, IIoT, CAD modeling, and industrial automation.</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem;">
+      <div class="achieve-grid">
         
         <!-- Cert 1 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-industry4.jpg', 'NPTEL: Industry 4.0 & IIoT')">
-          <div class="cert-icon-check">📜</div>
-          <div class="achieve-content" style="flex-grow: 1;">
-            <h4>Industry 4.0 &amp; Industrial IoT (IIoT)</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">National Programme on Technology Enhanced Learning</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span class="achieve-badge" style="background: #e0e7ff; color: var(--primary);">NPTEL Certified</span>
-              <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">Preview ↗</span>
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-1">
+            <img src="assets/certs/cert-industry4.jpg" alt="NPTEL: Industry 4.0 & IIoT" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">📜</div>
+              <span class="art-title">NPTEL IIoT Credential</span>
             </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge" style="background: #e0e7ff; color: var(--primary);">NPTEL Certified</span>
+              <span class="tag">Industry 4.0</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Industry 4.0 &amp; Industrial IoT (IIoT)</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">National Programme on Technology Enhanced Learning</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Verified Certificate</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/certs/cert-industry4.jpg', 'NPTEL Certified: Industry 4.0 & IIoT')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
         <!-- Cert 2 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-autodesk.jpg', 'Autodesk Certified Associate')">
-          <div class="cert-icon-check" style="background: linear-gradient(135deg, #0ea5e9, #2563eb);">📐</div>
-          <div class="achieve-content" style="flex-grow: 1;">
-            <h4>CAD for Mechanical Design Associate Prep</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">Autodesk Certified Curriculum</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span class="achieve-badge" style="background: #e0f2fe; color: #0369a1;">Autodesk Certified</span>
-              <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">Preview ↗</span>
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-7">
+            <img src="assets/certs/cert-autodesk.jpg" alt="Autodesk Certified Associate" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">📐</div>
+              <span class="art-title">Autodesk Mechanical CAD</span>
             </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge" style="background: #e0f2fe; color: #0369a1;">Autodesk Certified</span>
+              <span class="tag">Associate Prep</span>
+            </div>
+            <div class="achieve-content">
+              <h4>CAD for Mechanical Design Associate Prep</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Autodesk Certified Curriculum</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Verified Certificate</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/certs/cert-autodesk.jpg', 'Autodesk Certified: CAD for Mechanical Design')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
         <!-- Cert 3 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-sourcecad.jpg', 'Fusion 360 & SolidWorks Certification')">
-          <div class="cert-icon-check" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">🛠️</div>
-          <div class="achieve-content" style="flex-grow: 1;">
-            <h4>Fusion 360 &amp; SolidWorks Design</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">SourceCAD Professional Certification</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span class="achieve-badge" style="background: #fef3c7; color: #b45309;">SourceCAD Certified</span>
-              <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">Preview ↗</span>
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-3">
+            <img src="assets/certs/cert-sourcecad.jpg" alt="Fusion 360 & SolidWorks Certification" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">🛠️</div>
+              <span class="art-title">Fusion 360 &amp; SolidWorks</span>
             </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge" style="background: #fef3c7; color: #b45309;">SourceCAD Certified</span>
+              <span class="tag">3D CAD</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Fusion 360 &amp; SolidWorks Design</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">SourceCAD Professional Certification</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Verified Certificate</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/certs/cert-sourcecad.jpg', 'SourceCAD Certified: Fusion 360 & SolidWorks')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
         <!-- Cert 4 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-siemens.jpg', 'Siemens TecnoMatix Plant Simulation')">
-          <div class="cert-icon-check" style="background: linear-gradient(135deg, #10b981, #059669);">🏭</div>
-          <div class="achieve-content" style="flex-grow: 1;">
-            <h4>Siemens TecnoMatix Plant Simulation</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">Digital Factory &amp; Throughput Optimization</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span class="achieve-badge" style="background: #dcfce7; color: #15803d;">VAP Certified</span>
-              <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">Preview ↗</span>
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-4">
+            <img src="assets/certs/cert-siemens.jpg" alt="Siemens TecnoMatix Plant Simulation" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">🏭</div>
+              <span class="art-title">Siemens Tecnomatix</span>
             </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge" style="background: #dcfce7; color: #15803d;">VAP Certified</span>
+              <span class="tag">Digital Factory</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Siemens TecnoMatix Plant Simulation</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Digital Factory &amp; Throughput Optimization</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Verified Certificate</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/certs/cert-siemens.jpg', 'Siemens TecnoMatix Plant Simulation VAP')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
         <!-- Cert 5 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-eplan.jpg', 'E-PLAN Professional V8')">
-          <div class="cert-icon-check" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">⚡</div>
-          <div class="achieve-content" style="flex-grow: 1;">
-            <h4>E-PLAN Professional V8 &amp; PLC SCADA</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">Electrical Schematics &amp; Control Engineering</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span class="achieve-badge" style="background: #f3e8ff; color: #7e22ce;">Automation VAP</span>
-              <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">Preview ↗</span>
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-5">
+            <img src="assets/certs/cert-eplan.jpg" alt="E-PLAN Professional V8" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">⚡</div>
+              <span class="art-title">E-PLAN &amp; PLC SCADA</span>
             </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge" style="background: #f3e8ff; color: #7e22ce;">Automation VAP</span>
+              <span class="tag">PLC &amp; SCADA</span>
+            </div>
+            <div class="achieve-content">
+              <h4>E-PLAN Professional V8 &amp; PLC SCADA</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Electrical Schematics &amp; Control Engineering</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Verified Certificate</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/certs/cert-eplan.jpg', 'E-PLAN Professional V8 & PLC SCADA VAP')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
         <!-- Cert 6 -->
-        <div class="achieve-card" onclick="openImageModal('assets/certs/cert-softskills.jpg', 'NPTEL Soft Skills Development')">
-          <div class="cert-icon-check" style="background: linear-gradient(135deg, #06b6d4, #3b82f6);">💡</div>
-          <div class="achieve-content" style="flex-grow: 1;">
-            <h4>Soft Skills &amp; Professional Development</h4>
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem;">Leadership, Collaboration &amp; Problem Solving</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span class="achieve-badge" style="background: #ecfeff; color: #0e7490;">NPTEL Certified</span>
-              <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">Preview ↗</span>
+        <article class="achieve-card data-tilt">
+          <div class="project-media achieve-media grad-card-2">
+            <img src="assets/certs/cert-softskills.jpg" alt="NPTEL Soft Skills Development" class="project-img" onerror="this.style.display='none'" />
+            <div class="project-fallback-art">
+              <div class="art-badge-icon">💡</div>
+              <span class="art-title">Leadership &amp; Soft Skills</span>
             </div>
           </div>
-        </div>
+          <div class="achieve-body">
+            <div class="project-tags">
+              <span class="achieve-badge" style="background: #ecfeff; color: #0e7490;">NPTEL Certified</span>
+              <span class="tag">Communication</span>
+            </div>
+            <div class="achieve-content">
+              <h4>Soft Skills &amp; Professional Development</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.1rem; flex-grow: 1;">Leadership, Collaboration &amp; Problem Solving</p>
+              <div class="project-footer">
+                <span style="font-size: 0.82rem; font-weight: 600; color: var(--primary);">Verified Certificate</span>
+                <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="openImageModal('assets/certs/cert-softskills.jpg', 'NPTEL Certified: Soft Skills Development')">Preview</button>
+              </div>
+            </div>
+          </div>
+        </article>
 
       </div>
     </div>
@@ -1998,10 +2521,35 @@
   </div>
 
   <!-- ==========================================================================
-       DYNAMIC ENGINE: CANVAS GRID, SCROLL PARALLAX, 3D TILT & COUNTERS
+       DYNAMIC ENGINE: CANVAS GRID, THEME SWITCHER, 3D TILT & COUNTERS
        ========================================================================== -->
   <script>
-    // --- 1. DYNAMIC ROBOTICS / CAD GRID & SENSOR NODE CANVAS ---
+    // --- 0. BRIGHT / DARK MODE CONTROLLER & LOCALSTORAGE PERSISTENCE ---
+    const htmlEl = document.documentElement;
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+    // Retrieve saved theme or default to system preference
+    const savedTheme = localStorage.getItem('sp_portfolio_theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+    setTheme(initialTheme);
+
+    function setTheme(theme) {
+      htmlEl.setAttribute('data-theme', theme);
+      localStorage.setItem('sp_portfolio_theme', theme);
+    }
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlEl.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        showToast(newTheme === 'dark' ? 'Dark Mode Activated' : 'Bright Mode Activated');
+      });
+    }
+
+    // --- 1. DYNAMIC ROBOTICS / CAD GRID & SENSOR NODE CANVAS (THEME ADAPTIVE) ---
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
@@ -2009,7 +2557,6 @@
     let targetScrollY = scrollY;
     let mouse = { x: -1000, y: -1000, active: false };
 
-    // Responsive setup with device pixel ratio scaling
     function resizeCanvas() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = window.innerWidth;
@@ -2031,11 +2578,10 @@
         vx: (Math.random() - 0.5) * 0.45,
         vy: (Math.random() - 0.5) * 0.45,
         radius: Math.random() * 2 + 1.5,
-        depth: Math.random() * 0.6 + 0.4 // Parallax depth factor
+        depth: Math.random() * 0.6 + 0.4
       });
     }
 
-    // Mouse Tracking
     window.addEventListener('mousemove', (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
@@ -2046,48 +2592,43 @@
       mouse.active = false;
     });
 
-    // Scroll-Linked Parallax tracking
     window.addEventListener('scroll', () => {
       targetScrollY = window.scrollY;
       
-      // Update top scroll tracer beam
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       const progress = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
       const tracer = document.getElementById('scrollTracer');
       if (tracer) tracer.style.width = progress + '%';
     }, { passive: true });
 
-    // Main Canvas Render Loop (60 FPS)
     function renderCanvas() {
-      // Smooth interpolation for scroll inertia
       scrollY += (targetScrollY - scrollY) * 0.08;
-
       ctx.clearRect(0, 0, width, height);
 
-      // --- Draw Dynamic Coordinate Grid (CAD / Robotics Simulation Plane) ---
+      const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+
+      // --- Draw Dynamic Coordinate Grid (Adapts to Bright/Dark theme) ---
       const gridSize = 64;
       const offsetX = 0;
-      // Lines shift upward smoothly with parallax scroll
       const offsetY = -(scrollY * 0.35) % gridSize;
 
       ctx.beginPath();
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(99, 102, 241, 0.055)'; // Soft subtle indigo
+      // Grid line contrast calibrated per theme
+      ctx.strokeStyle = isDark ? 'rgba(99, 102, 241, 0.12)' : 'rgba(99, 102, 241, 0.055)';
 
-      // Vertical lines
       for (let x = offsetX; x <= width; x += gridSize) {
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
       }
-      // Horizontal lines
       for (let y = offsetY; y <= height; y += gridSize) {
         ctx.moveTo(0, y);
         ctx.lineTo(width, y);
       }
       ctx.stroke();
 
-      // Crosshairs / Grid Intersection Marks (Robotics Origin Points)
-      ctx.fillStyle = 'rgba(79, 70, 229, 0.12)';
+      // Crosshairs / Grid Intersection Marks
+      ctx.fillStyle = isDark ? 'rgba(129, 140, 248, 0.22)' : 'rgba(79, 70, 229, 0.12)';
       for (let x = offsetX; x <= width; x += gridSize * 2) {
         for (let y = offsetY; y <= height; y += gridSize * 2) {
           ctx.beginPath();
@@ -2096,31 +2637,26 @@
         }
       }
 
-      // --- Update and Draw Floating Sensor Nodes & Data Connections ---
+      // --- Floating Sensor Nodes & Data Connections ---
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
 
-        // Move nodes naturally
         node.x += node.vx;
         node.y += node.vy;
 
-        // Wrap around edges
         if (node.x < 0) node.x = width;
         if (node.x > width) node.x = 0;
         if (node.y < 0) node.y = height;
         if (node.y > height) node.y = 0;
 
-        // Dynamic parallax shift calculated from scroll
         const drawY = (node.y - (scrollY * node.depth * 0.15)) % height;
         const finalY = drawY < 0 ? drawY + height : drawY;
 
-        // Node Glow Dot
         ctx.beginPath();
         ctx.arc(node.x, finalY, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(79, 70, 229, 0.38)';
+        ctx.fillStyle = isDark ? 'rgba(129, 140, 248, 0.55)' : 'rgba(79, 70, 229, 0.38)';
         ctx.fill();
 
-        // Connect nearby nodes with subtle data telemetry lines
         for (let j = i + 1; j < nodes.length; j++) {
           const other = nodes[j];
           const otherY = (other.y - (scrollY * other.depth * 0.15)) % height;
@@ -2134,14 +2670,13 @@
             ctx.beginPath();
             ctx.moveTo(node.x, finalY);
             ctx.lineTo(other.x, finalOtherY);
-            const alpha = (1 - dist / 130) * 0.14;
+            const alpha = (1 - dist / 130) * (isDark ? 0.25 : 0.14);
             ctx.strokeStyle = `rgba(6, 182, 212, ${alpha})`;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }
 
-        // Interactive mouse connection line
         if (mouse.active) {
           const mdx = node.x - mouse.x;
           const mdy = finalY - mouse.y;
@@ -2151,7 +2686,7 @@
             ctx.beginPath();
             ctx.moveTo(node.x, finalY);
             ctx.lineTo(mouse.x, mouse.y);
-            const mAlpha = (1 - mDist / 160) * 0.28;
+            const mAlpha = (1 - mDist / 160) * (isDark ? 0.42 : 0.28);
             ctx.strokeStyle = `rgba(236, 72, 153, ${mAlpha})`;
             ctx.lineWidth = 1.1;
             ctx.stroke();
@@ -2194,13 +2729,12 @@
         const target = parseFloat(el.getAttribute('data-target'));
         const decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
         const suffix = el.getAttribute('data-suffix') || '';
-        const duration = 1600; // ms
+        const duration = 1600;
         const startTime = performance.now();
 
         function updateCounter(currentTime) {
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
-          // Ease-out cubic
           const easeProgress = 1 - Math.pow(1 - progress, 3);
           const currentVal = (easeProgress * target).toFixed(decimals);
 
@@ -2217,7 +2751,6 @@
       });
     }
 
-    // Trigger counter when scrolled into view
     const metricsBar = document.querySelector('.metrics-bar');
     if (metricsBar) {
       const observer = new IntersectionObserver((entries) => {
@@ -2242,7 +2775,6 @@
       });
     });
 
-    // Project Category Filtering
     const filterBtns = document.querySelectorAll('.filter-btn[data-filter]');
     const projectCards = document.querySelectorAll('.project-card');
 
@@ -2262,7 +2794,6 @@
       });
     });
 
-    // Copy to clipboard helper
     function copyContact(text) {
       navigator.clipboard.writeText(text).then(() => {
         showToast('Copied "' + text + '" to clipboard!');
@@ -2281,7 +2812,6 @@
       }, 3000);
     }
 
-    // Modal Image Preview Logic
     const imageModal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImg');
     const modalTitle = document.getElementById('modalTitle');
@@ -2315,7 +2845,6 @@
       }
     }
 
-    // Active Section Link Highlighting on Scroll
     window.addEventListener('scroll', () => {
       const scrollPos = window.scrollY + 180;
       document.querySelectorAll('section[id]').forEach(section => {
